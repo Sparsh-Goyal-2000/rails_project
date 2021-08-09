@@ -1,0 +1,28 @@
+<% if notice %>
+<p id="notice"><%= notice %></p>
+<% end %>
+
+<table>
+<tr>
+  <td><strong>Title:</strong></td>
+  <td><%= @product.title %></td>
+</tr>
+
+<tr>
+  <td><strong>Description:</strong>
+  <td><%=@product.description%>
+</tr>
+
+<tr>
+  <td><strong>Image url:</strong>
+  <td><%= @product.image_url %>
+</tr>
+
+<tr>
+  <td><strong>Price:</strong>
+  <td><%= @product.price %>
+</tr>
+</table>
+
+<%= link_to 'Edit', edit_product_path(@product) %> |
+<%= link_to 'Back', products_path %>
