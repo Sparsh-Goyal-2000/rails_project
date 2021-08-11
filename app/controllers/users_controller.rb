@@ -71,6 +71,6 @@ end
 
     # Only allow a list of trusted parameters through.
     def user_params
-      params.require(:user).permit(:name, :password, :password_confirmation)
+      params.require(:user).permit(:name, :email, :password, :password_confirmation)
     end
 end
