@@ -50,7 +50,11 @@ class Product < ApplicationRecord
     end
   end
   def set_defaults
+<<<<<<< HEAD
     self.title = DEFAULT_TITLE unless title
+=======
+    self.title = 'abc' unless title
+>>>>>>> callbacks commit
     self.discount_price = price unless discount_price
   end  
 end
