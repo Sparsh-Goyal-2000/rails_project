@@ -36,6 +36,7 @@ class Product < ApplicationRecord
   has_many :orders, through: :line_items
 
   before_destroy :ensure_not_referenced_by_any_line_item
+  after_initialize :set_defaults
 
   private
 
@@ -45,4 +46,8 @@ class Product < ApplicationRecord
       throw :abort
     end
   end
+  def set_defaults
+    self.title = 'abc' unless title
+    self.discount_price = price unless discount_price
+  end  
 end
