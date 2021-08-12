@@ -3,8 +3,8 @@ class LineItem < ApplicationRecord
   belongs_to :product, optional: true
   belongs_to :cart
 
-  validates :product_id, uniqueness: {
-    scope: :cart_id,
+  validates :cart_id, allow_nil: true, uniqueness: {
+    scope: :product_id,
 		message: 'one product can be added only once in the cart' 
   }
 
