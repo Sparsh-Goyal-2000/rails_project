@@ -23,12 +23,21 @@ class UsersController < ApplicationController
   def edit
   end
 
+<<<<<<< HEAD
   def line_items
     @items = @user.line_items.paginate(page: params[:page], per_page: ENTRY_PER_PAGE)
   end
 
   def orders
     @orders = @user.orders.paginate(page: params[:page], per_page: ENTRY_PER_PAGE)
+=======
+  def show_user_line_items
+    @items = @user.line_items.paginate(page: params[:page], per_page: 5)
+  end
+
+  def show_user_orders
+    @orders = @user.orders.paginate(page: params[:page], per_page: 5)
+>>>>>>> Associations Exercise Submitted 1st
   end
 
   # POST /users or /users.json
@@ -87,6 +96,9 @@ end
       @user = User.find(params[:id])
     end
 
+    def set_logged_in_user
+      @user = User.find(session[:user_id])
+    end
     # Only allow a list of trusted parameters through.
     def user_params
       params.require(:user).permit(:name, :email, :password, :password_confirmation)
