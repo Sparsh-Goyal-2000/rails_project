@@ -9,6 +9,7 @@ class Product < ApplicationRecord
   PERMALINK_ERROR_MESSAGE = 'should have minimum 3 words separated by hyphen'
   DESCRIPTION_ERROR_MESSAGE = 'should be between 5 to 10 words'
   LINE_ITEMS_PRESENT_MESSAGE = 'Line Items present'
+  DEFAULT_TITLE = 'abc'
 
   validates :title, :description, :image_url, :permalink, presence: true
   validates :title, uniqueness: true
@@ -47,7 +48,7 @@ class Product < ApplicationRecord
     end
   end
   def set_defaults
-    self.title = 'abc' unless title
+    self.title = DEFAULT_TITLE unless title
     self.discount_price = price unless discount_price
   end  
 end
