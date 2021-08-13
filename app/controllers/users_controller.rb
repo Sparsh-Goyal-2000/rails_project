@@ -1,6 +1,7 @@
 class UsersController < ApplicationController
   skip_before_action :authorize
   before_action :set_user, only: %i[ show edit update destroy ]
+  before_action :set_logged_in_user, only: [:show_user_orders, :show_user_line_items]
 
   # GET /users or /users.json
   def index
@@ -18,6 +19,14 @@ class UsersController < ApplicationController
 
   # GET /users/1/edit
   def edit
+  end
+
+  def show_user_line_items
+    @items = @user.line_items.paginate(page: params[:page], per_page: 5)
+  end
+
+  def show_user_orders
+    @orders = @user.orders.paginate(page: params[:page], per_page: 5)
   end
 
   # POST /users or /users.json
@@ -72,6 +81,9 @@ end
       @user = User.find(params[:id])
     end
 
+    def set_logged_in_user
+      @user = User.find(session[:user_id])
+    end
     # Only allow a list of trusted parameters through.
     def user_params
       params.require(:user).permit(:name, :email, :password, :password_confirmation)
