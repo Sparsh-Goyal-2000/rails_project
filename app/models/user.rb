@@ -15,6 +15,9 @@ class User < ApplicationRecord
   before_destroy :check_user_before_destroy
   after_destroy :ensure_an_admin_remains
 
+  has_many :orders
+  has_many :line_items, through: :orders
+
   class Error < StandardError
   end
 
