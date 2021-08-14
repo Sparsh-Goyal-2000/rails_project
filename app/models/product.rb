@@ -39,6 +39,8 @@ class Product < ApplicationRecord
   before_destroy :ensure_not_referenced_by_any_line_item
   after_initialize :set_defaults
 
+  scope :enabled, -> { where enabled: true }
+
   private
 
   def ensure_not_referenced_by_any_line_item
