@@ -1,6 +1,9 @@
- <% if notice %>
- <p id="notice"><%= notice %></p>
- <% end %>
+<% flash.each do |type, msg| %>
+  <div id = 'notice'>
+    <%= msg %>
+  </div>
+<% end %>
+
 <h1>Users</h1>
 
 <table>
