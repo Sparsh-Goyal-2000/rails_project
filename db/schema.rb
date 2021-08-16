@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_08_13_100424) do
+ActiveRecord::Schema.define(version: 2021_08_16_095627) do
 
   create_table "action_mailbox_inbound_emails", force: :cascade do |t|
     t.integer "status", default: 0, null: false
@@ -135,5 +135,6 @@ ActiveRecord::Schema.define(version: 2021_08_13_100424) do
   add_foreign_key "line_items", "orders"
   add_foreign_key "line_items", "products"
   add_foreign_key "orders", "users"
+  add_foreign_key "products", "catagories"
   add_foreign_key "support_requests", "orders"
 end

@@ -1,0 +1,43 @@
+<% flash.each do |type, msg| %>
+  <div id = 'notice'>
+    <%= msg %>
+  </div>
+<% end %>
+<h1>
+  <%= @catagory.nil? ? 'All Catagories' : "Title: #{@catagory.title}" %>
+</h1>
+
+<% unless @catagories.empty? %>
+  <table border = 1>
+    <% unless @catagory.nil? %>
+      <thead>
+        <tr>
+        
+          <th>Sub Catagories</th>
+          <th colspan="3"></th>
+        </tr>
+      </thead>
+    <% end %>
+    <tbody>
+      <tr>
+        <th>Title</th>
+        <th>No. Of Products</th>
+      <tr>
+      <% @catagories.each do |catagory| %>
+          <td><%= catagory.title %></td>
+          <td><%= catagory.count %></td>
+          <td><%= link_to 'Show', catagory %></td>
+          <td><%= link_to 'Edit', edit_catagory_path(catagory) %></td>
+          <td><%= link_to 'Destroy', catagory, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% else %>
+  <%= 'No Sub Catagories' %>
+<% end %>
+<br><br>
+
+<%= link_to 'New Catagory', new_catagory_path %>
+<br>
+<%= link_to 'All Catagories', catagories_path %>
