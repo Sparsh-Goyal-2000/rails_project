@@ -16,6 +16,7 @@ class Product < ApplicationRecord
     with: VALID_DESCRIPTION_REGEX,
     message: DESCRIPTION_ERROR_MESSAGE
   }
+  validate :check_if_catagory_exists
   validates :image_url, allow_blank: true, url: true
   # Using Custom Validator
   validates_with ComparePriceValidator
@@ -35,9 +36,11 @@ class Product < ApplicationRecord
   has_many :line_items, dependent: :restrict_with_error
   has_many :orders, through: :line_items
   has_many :carts, through: :line_items
+  belongs_to :catagory, counter_cache: :count
 
   before_destroy :ensure_not_referenced_by_any_line_item
   after_initialize :set_defaults
+  after_create :increment_count
 
   scope :enabled, -> { where enabled: true }
 
@@ -52,5 +55,16 @@ class Product < ApplicationRecord
   def set_defaults
     self.title = DEFAULT_TITLE unless title
     self.discount_price = price unless discount_price
-  end  
+  end
+  def check_if_catagory_exists
+    if catagory_id.nil? || Catagory.find(catagory_id).nil?
+      errors.add(:catagory, 'must exist')
+    end
+  end
+  def increment_count
+    catagory = Catagory.find(catagory_id)
+    parent_catagory = Catagory.find(catagory.parent_id) if catagory.parent_id?
+    catagory.count += 1
+    parent_catagory.count += 1 unless parent_catagory.nil?
+  end
 end

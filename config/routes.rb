@@ -1,4 +1,7 @@
 Rails.application.routes.draw do
+  get 'catagories/catagory_with_subcatagory', to: 'catagories#catagory_with_subcatagory'
+
+  resources :catagories
   get 'admin' => 'admin#index'
   get 'users/orders', to: 'users#show_user_orders'
   get 'users/line_items', to: 'users#show_user_line_items'
@@ -7,6 +10,7 @@ Rails.application.routes.draw do
     post 'login' => :create
     get 'logout' => :destroy
   end
+
 
   resources :support_requests, only: [ :index, :update ]
 
