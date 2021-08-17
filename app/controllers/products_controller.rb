@@ -88,5 +88,6 @@ class ProductsController < ApplicationController
     parameters = params.require(:product).permit(:title, :description, :image_url, :price, :enabled, :discount_price, :permalink)
     parameters[:catagory_id] = catagory_id
     parameters
+ #  params.require(:product).permit(:title, :description, :catagory, :image_url, :price, :enabled, :discount_price, :permalink)
   end
 end
