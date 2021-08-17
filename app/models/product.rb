@@ -3,7 +3,7 @@ require_relative '../validators/compare_price_validator'
 
 class Product < ApplicationRecord
 
-  VALID_PERMALINK_REGEX = /\A([a-zA-Z0-9]+-){2,}([a-zA-Z0-9]+)\z/
+  VALID_PERMALINK_REGEX = /\A([[:alnum:]]+-){2,}([[:alnum:]]+)\z/
   VALID_DESCRIPTION_REGEX = /\A(\s*\w+\s+){4,9}(\s*\w+\s*)\z/
   MINIMUM_PRICE = 0.01
   PERMALINK_ERROR_MESSAGE = 'should have minimum 3 words separated by hyphen'
@@ -16,16 +16,19 @@ class Product < ApplicationRecord
     message: DESCRIPTION_ERROR_MESSAGE
   }
   validates :image_url, allow_blank: true, url: true
+  validates :price, presence: true, numericality: { 
+    greater_than_or_equal_to: MINIMUM_PRICE,
+    only_integer: true
+  }
+
   # Using Custom Validator
-  validates_with ComparePriceValidator
+   validates_with ComparePriceValidator
 
   # Without using Custom Validator
-  validates :price, presence: true
   validates :price, numericality: { 
-    greater_than_or_equal_to: MINIMUM_PRICE,
-    greater_than: :discount_price,
-    only_integer: true
+    greater_than: :discount_price
   }, if: :discount_price
+
   validates :permalink, uniqueness: true, allow_blank: true, format: {
     with: VALID_PERMALINK_REGEX,
     message: PERMALINK_ERROR_MESSAGE
