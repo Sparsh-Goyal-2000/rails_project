@@ -39,7 +39,7 @@ class Product < ApplicationRecord
   has_many :line_items, dependent: :restrict_with_error
   has_many :orders, through: :line_items
   has_many :carts, through: :line_items
-  belongs_to :catagory, counter_cache: :count
+  belongs_to :catagory, counter_cache: true
 
   before_destroy :ensure_not_referenced_by_any_line_item
   after_initialize :set_title
@@ -74,7 +74,7 @@ class Product < ApplicationRecord
   def increment_count
     catagory = Catagory.find(catagory_id)
     parent_catagory = Catagory.find(catagory.parent_id) if catagory.parent_id?
-    catagory.count += 1
-    parent_catagory.count += 1 unless parent_catagory.nil?
+    catagory.products_count += 1
+    parent_catagory.products_count += 1 unless parent_catagory.nil?
   end
 end
