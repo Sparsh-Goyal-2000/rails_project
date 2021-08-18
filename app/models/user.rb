@@ -25,9 +25,9 @@ class User < ApplicationRecord
     end
   end
 
-  def ensure_user_is_not_admin_before_destroy
+  def ensure_user_is_not_admin_before_update
     if email.eql?(ADMIN_EMAIL)
-      errors.add(:email, 'can\'t delete admin')
+      errors.add(:email, 'can\'t update admin')
       throw :abort 
     end
   end

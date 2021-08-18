@@ -27,7 +27,7 @@ class Product < ApplicationRecord
 
   # Without using Custom Validator
   validates :price, numericality: { 
-    greater_than: :discount_price
+    greater_than_or_equal_to: :discount_price
   }, if: :discount_price
 
   validates :permalink, uniqueness: true, allow_blank: true, format: {
@@ -39,7 +39,8 @@ class Product < ApplicationRecord
   has_many :orders, through: :line_items
 
   before_destroy :ensure_not_referenced_by_any_line_item
-  after_initialize :set_defaults
+  after_initialize :set_title
+  before_validation :set_discount_price
 
   private
 
@@ -49,9 +50,12 @@ class Product < ApplicationRecord
       throw :abort
     end
   end
-  
-  def set_defaults
+
+  def set_title
     self.title = DEFAULT_TITLE unless title
+  end
+
+  def set_discount_price
     self.discount_price = price unless discount_price
-  end  
+  end 
 end
