@@ -1,36 +1,38 @@
-require 'custom_validations'
+require_relative '../validators/url_validator'
+require_relative '../validators/compare_price_validator'
 
 class Product < ApplicationRecord
-  include CustomValidations
 
-  VALID_PERMALINK_REGEX = /\A(\w+-){2,}(\w+)\z/
-  VALID_DESCRIPTION_REGEX = /\A( *\w+ +){4,9}( *\w+ *)\z/
+  VALID_PERMALINK_REGEX = /\A([[:alnum:]]+-){2,}([[:alnum:]]+)\z/
+  VALID_DESCRIPTION_REGEX = /\A(\s*\w+\s+){4,9}(\s*\w+\s*)\z/
   MINIMUM_PRICE = 0.01
   PERMALINK_ERROR_MESSAGE = 'should have minimum 3 words separated by hyphen'
   DESCRIPTION_ERROR_MESSAGE = 'should be between 5 to 10 words'
   LINE_ITEMS_PRESENT_MESSAGE = 'Line Items present'
   DEFAULT_TITLE = 'abc'
 
-  validates :title, :description, :image_url, :permalink, presence: true
-  validates :title, uniqueness: true
-  validates :image_url, allow_blank: true, url: true
-  validates :permalink, uniqueness: true, allow_nil: true, format: {
-    with: VALID_PERMALINK_REGEX,
-    message: PERMALINK_ERROR_MESSAGE
-  }
-  validates :description, format: {
+  validates :title, presence: true, uniqueness: true
+  validates :description, allow_blank: true, format: {
     with: VALID_DESCRIPTION_REGEX,
     message: DESCRIPTION_ERROR_MESSAGE
   }
+  validates :image_url, allow_blank: true, url: true
+  validates :price, presence: true, numericality: { 
+    greater_than_or_equal_to: MINIMUM_PRICE,
+    only_integer: true
+  }
 
   # Using Custom Validator
-  validates_with ComparePriceValidator
+   validates_with ComparePriceValidator
 
   # Without using Custom Validator
-  validates :price, allow_nil: true, numericality: { 
-    greater_than_or_equal_to: MINIMUM_PRICE,
-    greater_than: :discount_price,
-    only_integer: true
+  validates :price, numericality: { 
+    greater_than_or_equal_to: :discount_price
+  }, if: :discount_price
+
+  validates :permalink, uniqueness: true, allow_blank: true, format: {
+    with: VALID_PERMALINK_REGEX,
+    message: PERMALINK_ERROR_MESSAGE
   }
 
   has_many :line_items, dependent: :restrict_with_error
@@ -38,7 +40,8 @@ class Product < ApplicationRecord
   has_many :carts, through: :line_items
 
   before_destroy :ensure_not_referenced_by_any_line_item
-  after_initialize :set_defaults
+  after_initialize :set_title
+  before_validation :set_discount_price
 
   private
 
@@ -48,8 +51,12 @@ class Product < ApplicationRecord
       throw :abort
     end
   end
-  def set_defaults
+
+  def set_title
     self.title = DEFAULT_TITLE unless title
+  end
+
+  def set_discount_price
     self.discount_price = price unless discount_price
-  end  
+  end 
 end

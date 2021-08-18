@@ -11,8 +11,8 @@ class User < ApplicationRecord
   has_secure_password
 
   after_create_commit :notify_with_welcome_email, if: :email?
-  before_update :check_admin_while_update
-  before_destroy :check_admin_while_destroy
+  before_update :ensure_user_is_not_admin_before_update
+  before_destroy :ensure_user_is_not_admin_before_destroy
   after_destroy :ensure_an_admin_remains
 
   has_many :orders
@@ -28,20 +28,20 @@ class User < ApplicationRecord
     end
   end
 
-  def check_admin_while_update
+  def ensure_user_is_not_admin_before_update
     if email.eql?(ADMIN_EMAIL)
       errors.add(:email, 'can\'t update admin')
       throw :abort 
     end
   end
 
-  def check_admin_while_destroy
+  def ensure_user_is_not_admin_before_destroy
     if email.eql?(ADMIN_EMAIL)
       errors.add(:email, 'can\'t delete admin')
       throw :abort 
     end
   end
-
+  
   def notify_with_welcome_email
     UserMailer.created(self).deliver_later
   end
