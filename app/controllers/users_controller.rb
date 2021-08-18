@@ -24,6 +24,7 @@ class UsersController < ApplicationController
   end
 
 <<<<<<< HEAD
+<<<<<<< HEAD
   def line_items
     @items = @user.line_items.paginate(page: params[:page], per_page: ENTRY_PER_PAGE)
   end
@@ -31,13 +32,18 @@ class UsersController < ApplicationController
   def orders
     @orders = @user.orders.paginate(page: params[:page], per_page: ENTRY_PER_PAGE)
 =======
+=======
+>>>>>>> 3b91ad61d9461399a9f4600a4e04a3e267faaeb3
   def show_user_line_items
     @items = @user.line_items.paginate(page: params[:page], per_page: 5)
   end
 
   def show_user_orders
     @orders = @user.orders.paginate(page: params[:page], per_page: 5)
+<<<<<<< HEAD
 >>>>>>> Associations Exercise Submitted 1st
+=======
+>>>>>>> 3b91ad61d9461399a9f4600a4e04a3e267faaeb3
   end
 
   # POST /users or /users.json

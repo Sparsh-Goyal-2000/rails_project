@@ -45,6 +45,8 @@ class Product < ApplicationRecord
 
   scope :enabled, -> { where enabled: true }
 
+  scope :enabled, -> { where enabled: true }
+
   private
 
   def ensure_not_referenced_by_any_line_item
