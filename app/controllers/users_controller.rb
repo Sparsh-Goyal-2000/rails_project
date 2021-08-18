@@ -22,7 +22,7 @@ class UsersController < ApplicationController
   # GET /users/1/edit
   def edit
   end
- 
+
   def line_items
     @items = @user.line_items.paginate(page: params[:page], per_page: ENTRY_PER_PAGE)
   end
@@ -87,9 +87,6 @@ end
       @user = User.find(params[:id])
     end
 
-    def set_logged_in_user
-      @user = User.find(session[:user_id])
-    end
     # Only allow a list of trusted parameters through.
     def user_params
       params.require(:user).permit(:name, :email, :password, :password_confirmation)
