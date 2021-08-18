@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
   get 'admin' => 'admin#index'
-  get 'users/orders', to: 'users#show_user_orders'
-  get 'users/line_items', to: 'users#show_user_line_items'
+  get 'users/orders', to: 'users#orders'
+  get 'users/line_items', to: 'users#line_items'
   controller :sessions do
     get 'login' => :new
     post 'login' => :create
