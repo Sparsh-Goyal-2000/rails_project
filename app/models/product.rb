@@ -49,16 +49,9 @@ class Product < ApplicationRecord
       throw :abort
     end
   end
+  
   def set_defaults
-<<<<<<< HEAD
-<<<<<<< HEAD
     self.title = DEFAULT_TITLE unless title
-=======
-    self.title = 'abc' unless title
->>>>>>> callbacks commit
-=======
-    self.title = DEFAULT_TITLE unless title
->>>>>>> 97ef305807feac1c09d40f3d23d8f9305270caaf
     self.discount_price = price unless discount_price
   end  
 end
