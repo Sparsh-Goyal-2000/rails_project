@@ -52,6 +52,7 @@ class UsersController < ApplicationController
 
   # DELETE /users/1 or /users/1.json
   def destroy
+<<<<<<< HEAD
     if @user.destroy
       respond_to do |format|
         format.html { redirect_to users_url, notice: "User #{@user.name} deleted." }
@@ -59,6 +60,19 @@ class UsersController < ApplicationController
       end
     else
       redirect_to users_url, notice: @user.errors['email']
+=======
+    begin
+      if @user.destroy
+        respond_to do |format|
+          format.html { redirect_to users_url, notice: "User #{@user.name} deleted." }
+          format.json { head :no_content }
+        end
+      else
+        redirect_to users_url, alert: @user.errors['email']
+      end
+    rescue Exception => e
+      redirect_to users_url, alert: e.message
+>>>>>>> 97ef305807feac1c09d40f3d23d8f9305270caaf
     end
   end
 
