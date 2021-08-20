@@ -44,6 +44,7 @@ class Product < ApplicationRecord
   before_validation :set_discount_price
 
   scope :enabled, -> { where enabled: true }
+  scope :disabled, -> { where enabled: false }
   
   private
 
