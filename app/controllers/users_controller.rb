@@ -17,6 +17,7 @@ class UsersController < ApplicationController
   # GET /users/new
   def new
     @user = User.new
+    @user.build_address
   end
 
   # GET /users/1/edit
@@ -25,10 +26,12 @@ class UsersController < ApplicationController
 
   def line_items
     @items = @user.line_items.paginate(page: params[:page], per_page: ENTRY_PER_PAGE)
+    render layout: 'myorders'
   end
 
   def orders
     @orders = @user.orders.paginate(page: params[:page], per_page: ENTRY_PER_PAGE)
+    render layout: 'myorders'
   end
 
   # POST /users or /users.json
@@ -63,17 +66,13 @@ class UsersController < ApplicationController
 
   # DELETE /users/1 or /users/1.json
   def destroy
-    begin
-      if @user.destroy
-        respond_to do |format|
-          format.html { redirect_to users_url, notice: "User #{@user.name} deleted." }
-          format.json { head :no_content }
-        end
-      else
-        redirect_to users_url, alert: @user.errors['email']
+    if @user.destroy
+      respond_to do |format|
+        format.html { redirect_to users_url, notice: "User #{@user.name} deleted." }
+        format.json { head :no_content }
       end
-    rescue Exception => e
-      redirect_to users_url, alert: e.message
+    else
+      redirect_to users_url, alert: @user.errors.full_messages.join
     end
   end
 
@@ -89,6 +88,13 @@ end
 
     # Only allow a list of trusted parameters through.
     def user_params
-      params.require(:user).permit(:name, :email, :password, :password_confirmation)
+    #  params[:user][:address_attributes] = params[:user][:address]
+      puts '===================='
+      puts params[:user]
+      params.require(:user).permit(
+        :name, :email, 
+        :password, :password_confirmation, 
+        address_attributes: [ :state, :city, :country, :pincode ]
+      )
     end
 end

@@ -15,8 +15,10 @@ class User < ApplicationRecord
   before_destroy :ensure_user_is_not_admin_before_destroy
   after_destroy :ensure_an_admin_remains
 
-  has_many :orders
+  has_many :orders, dependent: :restrict_with_error
   has_many :line_items, through: :orders
+  has_one :address, inverse_of: :user, dependent: :destroy
+  accepts_nested_attributes_for :address
 
   class Error < StandardError
   end

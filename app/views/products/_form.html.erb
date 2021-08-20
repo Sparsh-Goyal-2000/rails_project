@@ -31,12 +31,17 @@
 
    <div class="field">
     <%= form.label :catagory %>
-    <%= form.collection_select :catagory, Catagory.order(:title), :title, :title %>
+    <%= form.collection_select :catagory, Catagory.order(:title), :id, :title, { prompt: 'Select One' } %>
   </div>
 
   <div class="field">
     <%= form.label :image_url %>
     <%= form.text_field :image_url %>
+  </div>
+
+  <div class="field">
+    <%= form.label :image %>
+    <%= form.file_field :image %>
   </div>
 
   <div class="field">

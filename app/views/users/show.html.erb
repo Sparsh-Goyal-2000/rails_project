@@ -5,6 +5,21 @@
 <p>
   <strong>Name:</strong>
   <%= @user.name %>
+  <br>
+  <strong>Email:</strong>
+  <%= @user.email %>
+  <br>
+  <strong>City:</strong>
+  <%= @user.address.city %>
+  <br>
+ <strong>State:</strong>
+  <%= @user.address.state %>
+  <br>
+  <strong>Country:</strong>
+  <%= @user.address.country %>
+  <br>
+  <strong>PinCode:</strong>
+  <%= @user.address.pincode %> 
 </p>
 
 <%= link_to 'Edit', edit_user_path(@user) %> |
