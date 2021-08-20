@@ -68,30 +68,28 @@ class OrdersController < ApplicationController
 
   def pay_type_params
     if order_params[:pay_type] == "Credit Card"
-    params.require(:order).permit(:credit_card_number, :expiration_date)
+      params.require(:order).permit(:credit_card_number, :expiration_date)
     elsif order_params[:pay_type] == "Check"
-    params.require(:order).permit(:routing_number, :account_number)
+      params.require(:order).permit(:routing_number, :account_number)
     elsif order_params[:pay_type] == "Purchase Order"
-    params.require(:order).permit(:po_number)
-    else
-    {}
+      params.require(:order).permit(:po_number)
     end
-    end
+  end
 
   private
     # Use callbacks to share common setup or constraints between actions.
-    def set_order
-      @order = Order.find(params[:id])
-    end
+  def set_order
+    @order = Order.find(params[:id])
+  end
 
-    # Only allow a list of trusted parameters through.
-    def order_params
-      params.require(:order).permit(:name, :address, :email, :pay_type)
-    end
+  # Only allow a list of trusted parameters through.
+  def order_params
+    params.require(:order).permit(:name, :address, :email, :pay_type)
+  end
 
-    def ensure_cart_isnt_empty
-      if @cart.line_items.empty?
-        redirect_to store_index_url, notice: 'Your cart is empty'
-      end
+  def ensure_cart_isnt_empty
+    if @cart.line_items.empty?
+      redirect_to store_index_url, notice: 'Your cart is empty'
     end
+  end
 end

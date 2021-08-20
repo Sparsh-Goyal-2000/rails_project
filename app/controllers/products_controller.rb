@@ -51,11 +51,11 @@ class ProductsController < ApplicationController
   def destroy
     respond_to do |format|
       if @product.destroy
-          format.html { redirect_to products_url, notice: "Product was successfully destroyed." }
-          format.json { head :no_content }
+        format.html { redirect_to products_url, notice: "Product was successfully destroyed." }
+        format.json { head :no_content }
       else
-          format.html { redirect_to products_url, notice: @product.errors.values }
-          format.json { head :no_content }
+        format.html { redirect_to products_url, notice: @product.errors.values }
+        format.json { head :no_content }
       end
     end
   end
@@ -76,9 +76,9 @@ class ProductsController < ApplicationController
 
   private
     # Use callbacks to share common setup or constraints between actions.
-    def set_product
-      @product = Product.find(params[:id])
-    end
+  def set_product
+    @product = Product.find(params[:id])
+  end
 
     # Only allow a list of trusted parameters through.
     def product_params
