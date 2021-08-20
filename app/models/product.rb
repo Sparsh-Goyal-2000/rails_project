@@ -1,6 +1,3 @@
-require_relative '../validators/url_validator'
-require_relative '../validators/compare_price_validator'
-
 class Product < ApplicationRecord
 
   VALID_PERMALINK_REGEX = /\A([[:alnum:]]+-){2,}([[:alnum:]]+)\z/
