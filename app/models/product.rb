@@ -41,6 +41,8 @@ class Product < ApplicationRecord
   has_many :carts, through: :line_items
   belongs_to :catagory, counter_cache: true
 
+  has_one_attached :image
+
   before_destroy :ensure_not_referenced_by_any_line_item
   after_initialize :set_title
   before_validation :set_discount_price
