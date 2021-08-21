@@ -1,6 +1,4 @@
 class UsersController < ApplicationController
-  ENTRY_PER_PAGE = 5
-
   skip_before_action :authorize
   before_action :set_user, only: %i[ show edit update destroy ]
   before_action :set_logged_in_user, only: [:orders, :line_items]

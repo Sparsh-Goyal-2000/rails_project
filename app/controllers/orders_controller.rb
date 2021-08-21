@@ -26,7 +26,9 @@ class OrdersController < ApplicationController
 
   # POST /orders or /orders.json
   def create
-    @order = Order.new(order_params)
+    parameters = order_params
+    parameters[:user_id] = session[:user_id]
+    @order = Order.new(parameters)
     @order.add_line_items_from_cart(@cart)
 
     respond_to do |format|
@@ -86,9 +88,7 @@ class OrdersController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def order_params
-      parameters = params.require(:order).permit(:name, :address, :email, :pay_type)
-      parameters[:user_id] = session[:user_id]
-      parameters
+      params.require(:order).permit(:name, :address, :email, :pay_type)
     end
 
     def ensure_cart_isnt_empty
