@@ -25,12 +25,12 @@ class UsersController < ApplicationController
   end
 
   def line_items
-    @items = @user.line_items.paginate(page: params[:page], per_page: ENTRY_PER_PAGE)
+    @items = @current_user.line_items.paginate(page: params[:page], per_page: ENTRY_PER_PAGE)
     render layout: 'myorders'
   end
 
   def orders
-    @orders = @user.orders.paginate(page: params[:page], per_page: ENTRY_PER_PAGE)
+    @orders = @current_user.orders.paginate(page: params[:page], per_page: ENTRY_PER_PAGE)
     render layout: 'myorders'
   end
 
@@ -90,10 +90,11 @@ end
     def user_params
     #  params[:user][:address_attributes] = params[:user][:address]
       puts '===================='
-      puts params[:user]
+      puts params[:user][:role]
       params.require(:user).permit(
         :name, :email, 
         :password, :password_confirmation, 
+        :role,
         address_attributes: [ :state, :city, :country, :pincode ]
       )
     end

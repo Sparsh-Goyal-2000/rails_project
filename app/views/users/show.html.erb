@@ -9,17 +9,20 @@
   <strong>Email:</strong>
   <%= @user.email %>
   <br>
+  <strong>Role:</strong>
+  <%= @user.role %>
+  <br>
   <strong>City:</strong>
-  <%= @user.address.city %>
+  <%= @user.address.city if @user.address%>
   <br>
  <strong>State:</strong>
-  <%= @user.address.state %>
+  <%= @user.address.state if @user.address%>
   <br>
   <strong>Country:</strong>
-  <%= @user.address.country %>
+  <%= @user.address.country if @user.address%>
   <br>
   <strong>PinCode:</strong>
-  <%= @user.address.pincode %> 
+  <%= @user.address.pincode if @user.address%> 
 </p>
 
 <%= link_to 'Edit', edit_user_path(@user) %> |

@@ -1,4 +1,5 @@
 class CatagoriesController < ApplicationController
+  before_action :ensure_user_is_admin
   before_action :set_catagory, only: %i[ show edit update destroy ]
 
   # GET /catagories or /catagories.json
@@ -74,7 +75,7 @@ class CatagoriesController < ApplicationController
     def catagory_params
       puts params
       parent_catagory = Catagory.find_by_title(params[:catagory][:parent_catagory])
-      if params[:catagory][:parent_catagory].nil?
+      if params[:catagory][:parent_catagory].blank?
         parent_id = nil
       elsif parent_catagory.nil?
         parent_id = 0
