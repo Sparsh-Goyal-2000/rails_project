@@ -10,7 +10,7 @@ class Product < ApplicationRecord
   has_many :line_items
   has_many :orders, through: :line_items
 
-  validates :title, :price, presence: true
+  validates :title, :description, :price, presence: true
   with_options allow_blank: true do
     validates :title, uniqueness: true
     validates :description, format: {
@@ -36,7 +36,7 @@ class Product < ApplicationRecord
     # Without using Custom Validator
     validates :price, numericality: { 
       greater_than: :discount_price
-    }, if: :discount_price
+    }, if: :discount_price?
   end
 
   before_destroy :ensure_not_referenced_by_any_line_item
