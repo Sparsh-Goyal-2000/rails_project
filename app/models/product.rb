@@ -11,7 +11,7 @@ class Product < ApplicationRecord
   has_many :line_items
   has_many :orders, through: :line_items
 
-  validates :title, :price, presence: true
+  validates :title, :description, :price, presence: true
   with_options allow_blank: true do
     validates :title, uniqueness: true
     validates :description, format: {
@@ -37,12 +37,16 @@ class Product < ApplicationRecord
     # Without using Custom Validator
     validates :price, numericality: { 
       greater_than: :discount_price
-    }, if: :discount_price
+    }, if: :discount_price?
   end
 
   before_destroy :ensure_not_referenced_by_any_line_item
-  after_initialize :set_title
-  before_validation :set_discount_price
+  after_initialize do
+    self.title = DEFAULT_TITLE unless title?
+  end
+  before_validation do
+    self.discount_price = price unless discount_price?
+  end
 
   private
 
@@ -52,12 +56,4 @@ class Product < ApplicationRecord
       throw :abort
     end
   end
-
-  def set_title
-    self.title = DEFAULT_TITLE unless title
-  end
-
-  def set_discount_price
-    self.discount_price = price unless discount_price
-  end 
 end
