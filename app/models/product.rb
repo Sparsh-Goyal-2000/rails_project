@@ -1,52 +1,22 @@
 class Product < ApplicationRecord
-
-  VALID_PERMALINK_REGEX = /\A([[:alnum:]]+-){2,}([[:alnum:]]+)\z/
-  VALID_DESCRIPTION_REGEX = /\A(\s*\w+\s+){4,9}(\s*\w+\s*)\z/
-  MINIMUM_PRICE = 0.01
-  PERMALINK_ERROR_MESSAGE = 'should have minimum 3 words separated by hyphen'
-  DESCRIPTION_ERROR_MESSAGE = 'should be between 5 to 10 words'
-  LINE_ITEMS_PRESENT_MESSAGE = 'Line Items present'
-  
-  has_many :line_items
-  has_many :orders, through: :line_items
-
-  validates :title, :description, :price, presence: true
-  with_options allow_blank: true do
+    validates :title, :description, :image_url, presence: true
+    validates :price, numericality: { greater_than_or_equal_to: 0.01 }
     validates :title, uniqueness: true
-    validates :description, format: {
-      with: VALID_DESCRIPTION_REGEX,
-      message: DESCRIPTION_ERROR_MESSAGE
-    }
-    validates :image_url, url: true
-    validates :permalink, uniqueness: true, format: {
-      with: VALID_PERMALINK_REGEX,
-      message: PERMALINK_ERROR_MESSAGE
-    }
-  end
-  
-  # Using Custom Validator
-  validates_with ComparePriceValidator
-
-  with_options allow_nil: true do
-    validates :price, numericality: { 
-      greater_than_or_equal_to: MINIMUM_PRICE,
-      only_integer: true
+    validates :image_url, allow_blank: true, format: {
+        with: %r{\.(gif|jpg|png)\Z}i,
+        message: 'must be a URL for GIF, JPG or PNG image.'
     }
 
-    # Without using Custom Validator
-    validates :price, numericality: { 
-      greater_than: :discount_price
-    }, if: :discount_price?
-  end
+    has_many :line_items
+    has_many :orders, through: :line_items
 
-  before_destroy :ensure_not_referenced_by_any_line_item
+    before_destroy :ensure_not_referenced_by_any_line_item
 
-  private
-
-  def ensure_not_referenced_by_any_line_item
-    unless line_items.empty?
-      errors.add(:base, LINE_ITEMS_PRESENT_MESSAGE)
-      throw :abort
-    end
-  end
+    private
+        def ensure_not_referenced_by_any_line_item
+            unless line_items.empty?
+                errors.add(:base, 'Line Items present')
+                throw :abort
+            end
+        end
 end

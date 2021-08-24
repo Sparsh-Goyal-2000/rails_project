@@ -1,12 +1,5 @@
 class User < ApplicationRecord
-  VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-]+(\.[a-z]+)*\.[a-z]+\z/i
-  
-  validates :name, :email, presence: true, uniqueness: true
-  validates :email, allow_blank: true, format: { 
-    with: VALID_EMAIL_REGEX,
-		message: 'is not an email' 
-  }
-  
+  validates :name, presence: true, uniqueness: true
   has_secure_password
 
   after_destroy :ensure_an_admin_remains
