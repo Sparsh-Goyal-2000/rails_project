@@ -1,6 +1,4 @@
 class ApplicationController < ActionController::Base
-    ENTRY_PER_PAGE = 5
-    
     before_action :authorize
 
     protected

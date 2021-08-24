@@ -1,7 +1,9 @@
 Rails.application.routes.draw do
   get 'admin' => 'admin#index'
-  get 'users/orders', to: 'users#orders'
-  get 'users/line_items', to: 'users#line_items'
+  namespace :users do
+    get :orders
+    get :line_items
+  end
   controller :sessions do
     get 'login' => :new
     post 'login' => :create
