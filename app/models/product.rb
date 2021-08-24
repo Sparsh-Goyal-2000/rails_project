@@ -47,6 +47,9 @@ class Product < ApplicationRecord
     self.discount_price = price unless discount_price?
   end
 
+  scope :enabled, -> { where enabled: true }
+  scope :disabled, -> { where enabled: false }
+
   private
 
   def ensure_not_referenced_by_any_line_item
