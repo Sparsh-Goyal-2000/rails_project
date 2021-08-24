@@ -41,12 +41,8 @@ class Product < ApplicationRecord
   end
 
   before_destroy :ensure_not_referenced_by_any_line_item
-  after_initialize do
-    self.title = DEFAULT_TITLE unless title?
-  end
-  before_validation do
-    self.discount_price = price unless discount_price?
-  end
+  after_initialize :set_title, unless: :title?
+  before_validation :set_default_price, unless: :discount_price?
 
   private
 
@@ -55,5 +51,13 @@ class Product < ApplicationRecord
       errors.add(:base, LINE_ITEMS_PRESENT_MESSAGE)
       throw :abort
     end
+  end
+  
+  def set_title
+    self.title = DEFAULT_TITLE 
+  end
+
+  def set_default_price
+    self.discount_price = price
   end
 end
