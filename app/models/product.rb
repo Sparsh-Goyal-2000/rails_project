@@ -6,7 +6,8 @@ class Product < ApplicationRecord
   PERMALINK_ERROR_MESSAGE = 'should have minimum 3 words separated by hyphen'
   DESCRIPTION_ERROR_MESSAGE = 'should be between 5 to 10 words'
   LINE_ITEMS_PRESENT_MESSAGE = 'Line Items present'
-  
+  DEFAULT_TITLE = 'abc'
+
   has_many :line_items
   has_many :orders, through: :line_items
 
@@ -40,6 +41,8 @@ class Product < ApplicationRecord
   end
 
   before_destroy :ensure_not_referenced_by_any_line_item
+  after_initialize :set_title, unless: :title?
+  before_validation :set_default_price, unless: :discount_price?
 
   private
 
@@ -48,5 +51,13 @@ class Product < ApplicationRecord
       errors.add(:base, LINE_ITEMS_PRESENT_MESSAGE)
       throw :abort
     end
+  end
+  
+  def set_title
+    self.title = DEFAULT_TITLE 
+  end
+
+  def set_default_price
+    self.discount_price = price
   end
 end
