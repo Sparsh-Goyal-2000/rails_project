@@ -43,6 +43,9 @@ class Product < ApplicationRecord
   after_initialize :set_title, unless: :title?
   before_validation :set_default_price, unless: :discount_price?
 
+  scope :enabled, -> { where enabled: true }
+  scope :disabled, -> { where enabled: false }
+
   private
 
   def ensure_not_referenced_by_any_line_item
