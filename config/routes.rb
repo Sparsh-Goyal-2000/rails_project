@@ -1,5 +1,9 @@
 Rails.application.routes.draw do
   get 'admin' => 'admin#index'
+  resources :users do
+    get :orders, on: :collection
+    get :line_items, on: :collection
+  end
   controller :sessions do
     get 'login' => :new
     post 'login' => :create

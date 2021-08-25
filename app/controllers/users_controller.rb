@@ -1,6 +1,7 @@
 class UsersController < ApplicationController
   skip_before_action :authorize
   before_action :set_user, only: %i[ show edit update destroy ]
+  before_action :set_logged_in_user, only: [:orders, :line_items]
 
   # GET /users or /users.json
   def index
@@ -18,6 +19,14 @@ class UsersController < ApplicationController
 
   # GET /users/1/edit
   def edit
+  end
+
+  def line_items
+    @items = @user.line_items.paginate(page: params[:page], per_page: ENTRY_PER_PAGE)
+  end
+
+  def orders
+    @orders = @user.orders.paginate(page: params[:page], per_page: ENTRY_PER_PAGE)
   end
 
   # POST /users or /users.json

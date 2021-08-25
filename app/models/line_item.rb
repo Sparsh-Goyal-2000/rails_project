@@ -1,7 +1,7 @@
 class LineItem < ApplicationRecord
   belongs_to :order, optional: true
   belongs_to :product, optional: true
-  belongs_to :cart
+  belongs_to :cart, counter_cache: true
 
   validates :cart_id, allow_nil: true, uniqueness: {
     scope: :product_id,

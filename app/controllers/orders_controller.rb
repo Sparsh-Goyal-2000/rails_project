@@ -1,5 +1,6 @@
 class OrdersController < ApplicationController
   skip_before_action :authorize, only: [:new, :create]
+  before_action :set_logged_in_user
 
   include CurrentCart
   before_action :set_cart, only: [:new, :create]
@@ -26,7 +27,7 @@ class OrdersController < ApplicationController
 
   # POST /orders or /orders.json
   def create
-    @order = Order.new(order_params)
+    @order = Order.new(create_params)
     @order.add_line_items_from_cart(@cart)
 
     respond_to do |format|
@@ -85,6 +86,12 @@ class OrdersController < ApplicationController
   # Only allow a list of trusted parameters through.
   def order_params
     params.require(:order).permit(:name, :address, :email, :pay_type)
+  end
+
+  def create_params
+    parameters = order_params
+    parameters[:user_id] = @user.id
+    parameters
   end
 
   def ensure_cart_isnt_empty

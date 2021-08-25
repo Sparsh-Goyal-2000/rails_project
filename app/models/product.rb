@@ -2,14 +2,13 @@ class Product < ApplicationRecord
 
   VALID_PERMALINK_REGEX = /\A([[:alnum:]]+-){2,}([[:alnum:]]+)\z/
   VALID_DESCRIPTION_REGEX = /\A(\s*\w+\s+){4,9}(\s*\w+\s*)\z/
-  MINIMUM_PRICE = 0.01
   PERMALINK_ERROR_MESSAGE = 'should have minimum 3 words separated by hyphen'
   DESCRIPTION_ERROR_MESSAGE = 'should be between 5 to 10 words'
   LINE_ITEMS_PRESENT_MESSAGE = 'Line Items present'
-  DEFAULT_TITLE = 'abc'
 
-  has_many :line_items
+  has_many :line_items, dependent: :restrict_with_error
   has_many :orders, through: :line_items
+  has_many :carts, through: :line_items
 
   validates :title, :description, :price, presence: true
   with_options allow_blank: true do
@@ -43,6 +42,9 @@ class Product < ApplicationRecord
   before_destroy :ensure_not_referenced_by_any_line_item
   after_initialize :set_title, unless: :title?
   before_validation :set_default_price, unless: :discount_price?
+
+  scope :enabled, -> { where enabled: true }
+  scope :disabled, -> { where enabled: false }
 
   private
 

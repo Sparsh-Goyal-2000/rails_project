@@ -1,5 +1,4 @@
 class User < ApplicationRecord
-  VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-]+(\.[a-z]+)*\.[a-z]+\z/i
   ADMIN_EMAIL = 'admin@depot.com'
 
   validates :name, :email, presence: true, uniqueness: true
@@ -14,6 +13,9 @@ class User < ApplicationRecord
   before_update :ensure_user_is_not_admin_before_update
   before_destroy :ensure_user_is_not_admin_before_destroy
   after_destroy :ensure_an_admin_remains
+
+  has_many :orders
+  has_many :line_items, through: :orders
 
   class Error < StandardError
   end

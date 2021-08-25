@@ -22,6 +22,10 @@ gem 'jbuilder', '~> 2.7'
 # Use Active Model has_secure_password
   gem 'bcrypt', '~> 3.1.7'
 
+  gem 'will_paginate', '~> 3.3.0'
+  gem 'will_paginate-bootstrap' 
+#this is needed to add bootsrap style to pagination
+
 # Use Active Storage variant
 # gem 'image_processing', '~> 1.2'
 
