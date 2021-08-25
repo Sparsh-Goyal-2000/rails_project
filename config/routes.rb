@@ -1,8 +1,8 @@
 Rails.application.routes.draw do
   get 'admin' => 'admin#index'
-  namespace :users do
-    get :orders
-    get :line_items
+  resources :users do
+    get :orders, on: :collection
+    get :line_items, on: :collection
   end
   controller :sessions do
     get 'login' => :new

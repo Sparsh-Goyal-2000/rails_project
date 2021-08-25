@@ -4,11 +4,11 @@
       <th> Items</th>
       <th> Total Price</th>
     </tr>
-    <% @orders.includes(:line_items).each do |order| %>
+    <% @orders.includes(line_items: :product).each do |order| %>
       <tr>
         <td>
           <% total = 0 %>
-          <% order.line_items.includes(:product).each do |line_item| %>
+          <% order.line_items.each do |line_item| %>
             <%= pluralize(line_item.quantity, line_item.product.title) %>
             <% total += line_item.total_price %>
           <% end %>
