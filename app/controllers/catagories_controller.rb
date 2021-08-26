@@ -22,7 +22,6 @@ class CatagoriesController < ApplicationController
   end
 
   def catagory_with_subcatagory
-    puts '======================='
     @catagories = Catagory.all
   end
 
