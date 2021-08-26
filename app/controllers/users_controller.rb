@@ -84,22 +84,10 @@ end
     @user = User.find(params[:id])
   end
 
-<<<<<<< HEAD
-    # Only allow a list of trusted parameters through.
-    def user_params
-    #  params[:user][:address_attributes] = params[:user][:address]
-      puts '===================='
-      puts params[:user]
-      params.require(:user).permit(
-        :name, :email, 
-        :password, :password_confirmation, 
-        address_attributes: [ :state, :city, :country, :pincode ]
-      )
-    end
-=======
   # Only allow a list of trusted parameters through.
   def user_params
-    params.require(:user).permit(:name, :email, :password, :password_confirmation)
+    params.require(:user).permit(:name, :email, :password, :password_confirmation,
+      address_attributes: [ :state, :city, :country, :pincode ]
+    )
   end
->>>>>>> Additional_Exercise
 end

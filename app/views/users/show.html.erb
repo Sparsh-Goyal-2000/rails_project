@@ -7,17 +7,18 @@
   <strong>Email:</strong>
   <%= @user.email %>
   <br>
+  <% address = @user.address %>
   <strong>City:</strong>
-  <%= @user.address.city %>
+  <%= address.city %>
   <br>
- <strong>State:</strong>
-  <%= @user.address.state %>
+  <strong>State:</strong>
+  <%= address.state %>
   <br>
   <strong>Country:</strong>
-  <%= @user.address.country %>
+  <%= address.country %>
   <br>
   <strong>PinCode:</strong>
-  <%= @user.address.pincode %> 
+  <%= address.pincode %>
 </p>
 
 <%= link_to 'Edit', edit_user_path(@user) %> |

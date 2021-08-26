@@ -16,7 +16,7 @@ class User < ApplicationRecord
 
   has_many :orders, dependent: :restrict_with_error
   has_many :line_items, through: :orders
-  has_one :address, inverse_of: :user, dependent: :destroy
+  has_one :address, dependent: :destroy
   accepts_nested_attributes_for :address
 
   class Error < StandardError

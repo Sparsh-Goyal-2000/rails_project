@@ -10,8 +10,6 @@
     </tr>
   </tfoot>
   <tbody>
-    <% @products.each do |product| %>
-      <%= render 'product_listing', product: product %>
-    <% end %>
+  <%= render partial: "product_listing", collection: @products, as: :product %>
   </tbody>
 </table>
