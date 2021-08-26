@@ -9,6 +9,7 @@ class Product < ApplicationRecord
   has_many :line_items, dependent: :restrict_with_error
   has_many :orders, through: :line_items
   has_many :carts, through: :line_items
+  belongs_to :catagory, counter_cache: true
 
   validates :title, :description, :price, presence: true
   with_options allow_blank: true do
@@ -41,7 +42,10 @@ class Product < ApplicationRecord
 
   before_destroy :ensure_not_referenced_by_any_line_item
   after_initialize :set_title, unless: :title?
-  before_validation :set_default_price, unless: :discount_price?
+  before_validation :set_default_price, unless: :discount_price?, if: :price?
+  before_update :decrement_in_parent_catagory_count
+  after_save :increment_in_parent_catagory_count
+  after_destroy :decrement_in_parent_catagory_count
 
   scope :enabled, -> { where enabled: true }
   scope :disabled, -> { where enabled: false }
@@ -60,6 +64,18 @@ class Product < ApplicationRecord
   end
 
   def set_default_price
-    self.discount_price = price
+    self.discount_price = price - 1
+  end
+
+  def increment_in_parent_catagory_count
+    unless catagory.parent.nil?
+      Catagory.increment_counter(:products_count, catagory.parent.id)
+    end
+  end
+
+  def decrement_in_parent_catagory_count
+    unless catagory.parent.nil?
+      Catagory.decrement_counter(:products_count, catagory.parent.id)
+    end
   end
 end

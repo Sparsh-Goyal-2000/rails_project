@@ -1,0 +1,27 @@
+<%= form_with(model: catagory) do |form| %>
+  <% if catagory.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(catagory.errors.count, "error") %> prohibited this catagory from being saved:</h2>
+
+      <ul>
+        <% catagory.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :title %>
+    <%= form.text_field :title %>
+  </div>
+
+  <div class="field">
+    <%= form.label :parent_id, 'Parent Catagory:' %>
+    <%= form.collection_select :parent_id, Catagory.root, :id, :title, { prompt: 'Select Parent Catagory if any' } %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>

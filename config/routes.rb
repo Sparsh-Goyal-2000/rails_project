@@ -1,4 +1,8 @@
 Rails.application.routes.draw do
+
+  resources :catagories do
+    get :catagory_with_subcatagory, on: :collection
+  end
   get 'admin' => 'admin#index'
   resources :users do
     get :orders, on: :collection
@@ -9,6 +13,7 @@ Rails.application.routes.draw do
     post 'login' => :create
     get 'logout' => :destroy
   end
+
 
   resources :support_requests, only: [ :index, :update ]
 
