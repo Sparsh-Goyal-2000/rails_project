@@ -43,6 +43,7 @@ class Product < ApplicationRecord
   before_destroy :ensure_not_referenced_by_any_line_item
   after_initialize :set_title, unless: :title?
   before_validation :set_default_price, unless: :discount_price?
+  after_create :increment_in_parent_catagory_count
 
   scope :enabled, -> { where enabled: true }
   scope :disabled, -> { where enabled: false }
@@ -61,19 +62,12 @@ class Product < ApplicationRecord
   end
 
   def set_default_price
-    self.discount_price = price
+    self.discount_price = price - 1
   end
 
-  def check_if_catagory_exists
-    if catagory_id.nil? || Catagory.find(catagory_id).nil?
-      errors.add(:catagory, 'must exist')
+  def increment_in_parent_catagory_count
+    unless catagory.parent.nil?
+      Catagory.increment_counter(:products_count, catagory.parent.id)
     end
-  end
-  
-  def increment_count
-    catagory = Catagory.find(catagory_id)
-    parent_catagory = Catagory.find(catagory.parent_id) if catagory.parent_id?
-    catagory.products_count += 1
-    parent_catagory.products_count += 1 unless parent_catagory.nil?
   end
 end

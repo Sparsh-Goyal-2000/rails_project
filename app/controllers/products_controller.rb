@@ -82,11 +82,6 @@ class ProductsController < ApplicationController
 
   # Only allow a list of trusted parameters through.
   def product_params
-    catagory = Catagory.find_by_title(params[:product][:catagory])
-    catagory_id = catagory.nil? ? nil : catagory.id
-    parameters = params.require(:product).permit(:title, :description, :image_url, :price, :enabled, :discount_price, :permalink)
-    parameters[:catagory_id] = catagory_id
-    parameters
- #  params.require(:product).permit(:title, :description, :catagory, :image_url, :price, :enabled, :discount_price, :permalink)
+    params.require(:product).permit(:title, :description, :catagory_id, :image_url, :price, :enabled, :discount_price, :permalink)
   end
 end

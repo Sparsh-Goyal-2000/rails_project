@@ -20,18 +20,9 @@
     <%= form.text_area :description, rows: 10, cols: 60 %>
   </div>
 
-  <%
-=begin%>
- <div class="field">
-    <%= form.label :catagory %>
-    <%= form.text_field :catagory %>
-  </div> 
-<%
-=end%>
-
-   <div class="field">
-    <%= form.label :catagory %>
-    <%= form.collection_select :catagory, Catagory.order(:title), :title, :title %>
+  <div class="field">
+    <%= form.label :catagory_id, 'Catagory' %>
+    <%= form.collection_select :catagory_id, Catagory.order(:title), :id, :title, { prompt: 'Select One' } %>
   </div>
 
   <div class="field">
