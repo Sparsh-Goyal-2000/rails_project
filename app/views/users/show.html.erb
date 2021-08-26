@@ -3,6 +3,22 @@
 <p>
   <strong>Name:</strong>
   <%= @user.name %>
+  <br>
+  <strong>Email:</strong>
+  <%= @user.email %>
+  <br>
+  <% address = @user.address %>
+  <strong>City:</strong>
+  <%= address.city %>
+  <br>
+  <strong>State:</strong>
+  <%= address.state %>
+  <br>
+  <strong>Country:</strong>
+  <%= address.country %>
+  <br>
+  <strong>PinCode:</strong>
+  <%= address.pincode %>
 </p>
 
 <%= link_to 'Edit', edit_user_path(@user) %> |

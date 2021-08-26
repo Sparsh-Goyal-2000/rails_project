@@ -6,6 +6,8 @@ class Product < ApplicationRecord
   DESCRIPTION_ERROR_MESSAGE = 'should be between 5 to 10 words'
   LINE_ITEMS_PRESENT_MESSAGE = 'Line Items present'
 
+  has_one_attached :image
+
   has_many :line_items, dependent: :restrict_with_error
   has_many :orders, through: :line_items
   has_many :carts, through: :line_items
@@ -42,8 +44,9 @@ class Product < ApplicationRecord
 
   before_destroy :ensure_not_referenced_by_any_line_item
   after_initialize :set_title, unless: :title?
-  before_validation :set_default_price, unless: :discount_price?
+  before_validation :set_default_price, unless: :discount_price?, if: :price?
   after_create :increment_in_parent_catagory_count
+  after_destroy :decrement_in_parent_catagory_count
 
   scope :enabled, -> { where enabled: true }
   scope :disabled, -> { where enabled: false }
@@ -68,6 +71,12 @@ class Product < ApplicationRecord
   def increment_in_parent_catagory_count
     unless catagory.parent.nil?
       Catagory.increment_counter(:products_count, catagory.parent.id)
+    end
+  end
+
+  def decrement_in_parent_catagory_count
+    unless catagory.parent.nil?
+      Catagory.decrement_counter(:products_count, catagory.parent.id)
     end
   end
 end
