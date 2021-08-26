@@ -4,7 +4,7 @@
       <th> Items</th>
       <th> Total Price</th>
     </tr>
-    <% @orders.each do |order| %>
+    <% @orders.includes(line_items: :product).each do |order| %>
       <tr>
         <td>
           <% total = 0 %>

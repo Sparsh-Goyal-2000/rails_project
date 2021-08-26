@@ -1,6 +1,4 @@
 class UsersController < ApplicationController
-  ENTRY_PER_PAGE = 5
-
   skip_before_action :authorize
   before_action :set_user, only: %i[ show edit update destroy ]
   before_action :set_logged_in_user, only: [:orders, :line_items]
@@ -82,10 +80,11 @@ end
 
   private
     # Use callbacks to share common setup or constraints between actions.
-    def set_user
-      @user = User.find(params[:id])
-    end
+  def set_user
+    @user = User.find(params[:id])
+  end
 
+<<<<<<< HEAD
     # Only allow a list of trusted parameters through.
     def user_params
     #  params[:user][:address_attributes] = params[:user][:address]
@@ -97,4 +96,10 @@ end
         address_attributes: [ :state, :city, :country, :pincode ]
       )
     end
+=======
+  # Only allow a list of trusted parameters through.
+  def user_params
+    params.require(:user).permit(:name, :email, :password, :password_confirmation)
+  end
+>>>>>>> Additional_Exercise
 end

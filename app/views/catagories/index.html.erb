@@ -1,8 +1,5 @@
-<% flash.each do |type, msg| %>
-  <div id = 'notice'>
-    <%= msg %>
-  </div>
-<% end %>
+<%= render 'flash' %>
+
 <h1>
   <%= @catagory.nil? ? 'All Catagories' : "Title: #{@catagory.title}" %>
 </h1>

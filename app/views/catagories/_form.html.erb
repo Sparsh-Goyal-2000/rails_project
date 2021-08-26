@@ -17,8 +17,8 @@
   </div>
 
   <div class="field">
-    <%= form.label :parent_catagory %>
-    <%= form.text_field :parent_catagory %>
+    <%= form.label :parent_id, 'Parent Catagory:' %>
+    <%= form.collection_select :parent_id, Catagory.order(:title).where(parent_id: nil), :id, :title, { prompt: 'Select Parent Catagory if any' } %>
   </div>
 
   <div class="actions">
