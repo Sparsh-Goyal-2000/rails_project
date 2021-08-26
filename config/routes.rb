@@ -3,8 +3,10 @@ Rails.application.routes.draw do
 
   resources :catagories
   get 'admin' => 'admin#index'
-  get 'users/orders', to: 'users#orders'
-  get 'users/line_items', to: 'users#line_items'
+  resources :users do
+    get :orders, on: :collection
+    get :line_items, on: :collection
+  end
   controller :sessions do
     get 'login' => :new
     post 'login' => :create

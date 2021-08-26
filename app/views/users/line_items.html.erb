@@ -4,7 +4,7 @@
         <th> Product Id </th>
         <th> Quantity </th>
         </tr>
-        <% @items.each do |line_item| %>
+        <% @items.includes(:product).each do |line_item| %>
         <tr>
             <td> <%= line_item.product.title %> </td>
             <td> <%= line_item.quantity %> </td>
