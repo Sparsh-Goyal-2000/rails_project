@@ -8,8 +8,7 @@ class CatagoriesController < ApplicationController
 
   # GET /catagories/1 or /catagories/1.json
   def show
-    @catagories = @catagory.subcatagories
-    render action: :index
+    @subcatagories = @catagory.subcatagories
   end
 
   # GET /catagories/new

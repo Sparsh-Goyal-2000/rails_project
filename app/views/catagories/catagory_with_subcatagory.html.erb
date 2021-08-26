@@ -1,7 +1,7 @@
 <% @catagories.each do |catagory| %>
   <% if catagory.parent_id.nil? %>
     <h1><%= catagory.title %></h1>
-    <% sub_catagories = @catagories.select { |temp_catagory| temp_catagory.parent_id == catagory.id } %>
+    <% sub_catagories = catagory.subcatagories %>
     <% sub_catagories.each do |sub_catagory| %>
       <%= sub_catagory.title %><br>
     <% end %>
