@@ -1,7 +1,8 @@
 Rails.application.routes.draw do
-  get 'catagories/catagory_with_subcatagory', to: 'catagories#catagory_with_subcatagory'
 
-  resources :catagories
+  resources :catagories do
+    get :catagory_with_subcatagory, on: :collection
+  end
   get 'admin' => 'admin#index'
   resources :users do
     get :orders, on: :collection
