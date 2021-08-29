@@ -1,23 +1,22 @@
 class User < ApplicationRecord
-  VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-]+(\.[a-z]+)*\.[a-z]+\z/i
   ADMIN_EMAIL = 'admin@depot.com'
 
-  validates :name, presence: true, uniqueness: true
-  validates :email, uniqueness: true, format: { 
+  validates :name, :email, presence: true, uniqueness: true
+  validates :email, allow_blank: true, format: { 
     with: VALID_EMAIL_REGEX,
 		message: 'is not an email' 
   }
   
   has_secure_password
 
-  after_create_commit :notify_with_welcome_email, if: :email?
+  after_create_commit :notify_with_welcome_email
   before_update :ensure_user_is_not_admin_before_update
   before_destroy :ensure_user_is_not_admin_before_destroy
   after_destroy :ensure_an_admin_remains
 
   has_many :orders, dependent: :restrict_with_error
   has_many :line_items, through: :orders
-  has_one :address, inverse_of: :user, dependent: :destroy
+  has_one :address, dependent: :destroy
   accepts_nested_attributes_for :address
   has_many :counters, dependent: :destroy
 

@@ -1,5 +1,4 @@
 Rails.application.routes.draw do
-  get 'catagories/catagory_with_subcatagory', to: 'catagories#catagory_with_subcatagory'
 
   namespace :admin do
     get :index
@@ -7,11 +6,14 @@ Rails.application.routes.draw do
     get :catagories
   end
 
-  namespace :users do
-    get :orders
-    get :line_items
+  resources :catagories do
+    get :catagory_with_subcatagory, on: :collection
   end
-
+  get 'admin' => 'admin#index'
+  resources :users do
+    get :orders, on: :collection
+    get :line_items, on: :collection
+  end
   controller :sessions do
     get 'login' => :new
     post 'login' => :create

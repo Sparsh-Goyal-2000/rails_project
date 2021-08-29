@@ -1,6 +1,4 @@
-<% if notice %>
-<p id="notice"><%= notice %></p>
-<% end %>
+<%= render 'flash' %>
 
 <p>
   <strong>Name:</strong>
@@ -9,20 +7,18 @@
   <strong>Email:</strong>
   <%= @user.email %>
   <br>
-  <strong>Role:</strong>
-  <%= @user.role %>
-  <br>
+  <% address = @user.address %>
   <strong>City:</strong>
-  <%= @user.address.city if @user.address%>
+  <%= address.city %>
   <br>
- <strong>State:</strong>
-  <%= @user.address.state if @user.address%>
+  <strong>State:</strong>
+  <%= address.state %>
   <br>
   <strong>Country:</strong>
-  <%= @user.address.country if @user.address%>
+  <%= address.country %>
   <br>
   <strong>PinCode:</strong>
-  <%= @user.address.pincode if @user.address%> 
+  <%= address.pincode %>
 </p>
 
 <%= link_to 'Edit', edit_user_path(@user) %> |

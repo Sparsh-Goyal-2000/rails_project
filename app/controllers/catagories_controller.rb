@@ -4,13 +4,11 @@ class CatagoriesController < ApplicationController
 
   # GET /catagories or /catagories.json
   def index
-    @catagory = nil
     @catagories = Catagory.all
   end
 
   # GET /catagories/1 or /catagories/1.json
   def show
-    @catagory = Catagory.find(params[:id])
     @catagories = @catagory.subcatagories
     render action: :index
   end
@@ -18,17 +16,19 @@ class CatagoriesController < ApplicationController
   # GET /catagories/new
   def new
     @catagory = Catagory.new
-    @catagory.parent = Catagory.find(params[:id]) unless params[:id].nil?
   end
 
   # GET /catagories/1/edit
   def edit
   end
 
+  def catagory_with_subcatagory
+    @catagories = Catagory.all
+  end
+
   # POST /catagories or /catagories.json
   def create
     @catagory = Catagory.new(catagory_params)
-    puts catagory_params
     respond_to do |format|
       if @catagory.save
         format.html { redirect_to @catagory, notice: "Catagory was successfully created." }
@@ -73,16 +73,6 @@ class CatagoriesController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def catagory_params
-      puts params
-      parent_catagory = Catagory.find_by_title(params[:catagory][:parent_catagory])
-      if params[:catagory][:parent_catagory].blank?
-        parent_id = nil
-      elsif parent_catagory.nil?
-        parent_id = 0
-      else
-        parent_id = parent_catagory.id
-      end
-      parameters = {title: params[:catagory][:title], parent_id: parent_id}
-      parameters
+      params.require(:catagory).permit(:title, :parent_id)
     end
 end
