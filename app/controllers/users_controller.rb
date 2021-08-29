@@ -1,7 +1,7 @@
 class UsersController < ApplicationController
-  skip_before_action :authorize
+  skip_before_action :authorize, :set_last_activity, :set_logged_in_user, :set_counter, only: [:new, :create]
   before_action :set_user, only: %i[ show edit update destroy ]
-  before_action :set_logged_in_user, only: [:orders, :line_items]
+  before_action :ensure_user_is_admin, only: [:index, :destroy]
 
   # GET /users or /users.json
   def index
@@ -38,7 +38,7 @@ class UsersController < ApplicationController
 
     respond_to do |format|
       if @user.save
-        format.html { redirect_to users_url, notice: "User #{@user.name} was successfully created." }
+        format.html { redirect_to store_index_path, notice: "User #{@user.name} was successfully created. You can login now" }
         format.json { render :show, status: :created, location: @user }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -53,7 +53,7 @@ class UsersController < ApplicationController
       if !@user.try(:authenticate, params[:user][:current_password])
         format.html { redirect_to edit_user_path(@user), notice: "User #{@user.name} current password not matched" }
       elsif @user.update(user_params)
-        format.html { redirect_to users_url, notice: "User #{@user.name} was successfully updated." }
+        format.html { redirect_to store_index_path, notice: "User #{@user.name} was successfully updated." }
         format.json { render :show, status: :ok, location: @user }
       else
         format.html { render :edit, status: :unprocessable_entity }
@@ -86,7 +86,7 @@ end
 
   # Only allow a list of trusted parameters through.
   def user_params
-    params.require(:user).permit(:name, :email, :password, :password_confirmation,
+    params.require(:user).permit(:name, :email, :role, :password, :password_confirmation,
       address_attributes: [ :state, :city, :country, :pincode ]
     )
   end

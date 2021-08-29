@@ -1,0 +1,22 @@
+<%= render 'flash' %>
+
+<h1><%= "Title: #{@catagory.title}" %></h1>
+<% unless @subcatagories.empty? %>
+  <h3>Sub Catagories</h3>
+  <table border = 1>
+      <tr>
+        <th>Title</th>
+        <th>No. Of Products</th>
+      <tr>
+      <% @subcatagories.each do |catagory| %>
+          <td><%= catagory.title %></td>
+          <td><%= catagory.products_count %></td>
+          <td><%= link_to 'Show', admin_catagory_path(catagory) %></td>
+          <td><%= link_to 'Edit', edit_admin_catagory_path(catagory) %></td>
+          <td><%= link_to 'Destroy', admin_catagory_path(catagory), method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        </tr>
+      <% end %>
+  </table>
+<% end %>
+<%= link_to 'Edit', edit_admin_catagory_path(@catagory) %> |
+<%= link_to 'Back', admin_catagories_path %>

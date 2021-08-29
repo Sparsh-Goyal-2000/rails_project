@@ -1,5 +1,5 @@
 class SessionsController < ApplicationController
-  skip_before_action :authorize, :check_last_activity, :set_logged_in_user, :set_counter
+  skip_before_action :authorize, :set_last_activity, :set_logged_in_user, :set_counter
 
   def new
   end
@@ -9,7 +9,11 @@ class SessionsController < ApplicationController
     if user.try(:authenticate, params[:password])
       user.set_last_activity
       session[:user_id] = user.id
-      redirect_to admin_index_path
+      if user.role == 'admin'
+        redirect_to admin_reports_path
+      else
+        redirect_to store_index_path
+      end
     else
       redirect_to login_url, alert: "Invalid user/password combination"
     end

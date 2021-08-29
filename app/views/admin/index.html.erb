@@ -4,20 +4,3 @@
 <p>
 It's <%= Time.now %>
 </p>
-
-
-<%= form_with method: :get, url: admin_reports_path do |form| %>
-  <div class="field">
-    <%= form.label :from %>
-    <%= form.date_field :from %>
-  </div>
-
-  <div class="field">
-    <%= form.label :to %>
-    <%= form.date_field :to %>
-  </div>
-
-  <div class="actions">
-    <%= form.submit 'Submit'%>
-  </div>
-<% end %>

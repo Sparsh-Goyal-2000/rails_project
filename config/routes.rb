@@ -2,13 +2,12 @@ Rails.application.routes.draw do
 
   namespace :admin do
     get :index
-    get :reports
-    get :catagories
+    resources :reports
+    resources :catagories do
+      get :catagory_with_subcatagory, on: :collection
+    end
   end
-
-  resources :catagories do
-    get :catagory_with_subcatagory, on: :collection
-  end
+  
   get 'admin' => 'admin#index'
   resources :users do
     get :orders, on: :collection
@@ -25,7 +24,6 @@ Rails.application.routes.draw do
   resources :orders
   resources :line_items
   resources :carts
-  resources :catagories
   root 'store#index', as: 'store_index'
   resources :products do
     get :who_bought, on: :member

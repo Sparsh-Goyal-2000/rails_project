@@ -1,39 +1,21 @@
 class ApplicationController < ActionController::Base  
-    before_action :set_logged_in_user
-    before_action :authorize
-    before_action :check_last_activity
-    before_action :set_counter
+  before_action :set_logged_in_user, :authorize, :set_last_activity, :set_counter
 
   protected
 
+  def set_logged_in_user
+    @current_user = User.find(session[:user_id])
+  end
+
   def authorize
-    @current_user = User.find_by(id: session[:user_id])
-    unless @current_user
-        redirect_to login_url, notice: "Please log in"
-    end
+    redirect_to login_url, notice: "Please log in" unless @current_user
   end
 
-  def set_logged_in_user
-    @user = User.find(session[:user_id])
-  end
-
-  def set_logged_in_user
-    @current_user = User.find_by(id: session[:user_id])
-    if @current_user.nil?
-      redirect_to login_url 
-    else
-      @current_user.set_last_activity
-    end
-  end
-
-  def check_last_activity
-    @current_user = User.find_by(id: session[:user_id])
-    if @current_user.nil?
-      redirect_to login_url 
-    elsif Time.current - @current_user.updated_at > 300
+  def set_last_activity
+    if Time.current - @current_user.updated_at > 300
       redirect_to logout_path, notice: 'Session Expired after 5 minutes of inactivity'
     else
-      @current_user.set_last_activity
+      @current_user.update(updated_at: Time.current)
     end
   end
 
