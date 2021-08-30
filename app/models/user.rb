@@ -18,8 +18,14 @@ class User < ApplicationRecord
   has_many :line_items, through: :orders
   has_one :address, dependent: :destroy
   accepts_nested_attributes_for :address
+  has_many :counters, dependent: :destroy
 
   class Error < StandardError
+  end
+
+  def set_last_activity
+    self.last_activity_time = Time.current
+    self.save
   end
 
   private

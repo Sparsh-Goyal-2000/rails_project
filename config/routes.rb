@@ -1,8 +1,13 @@
 Rails.application.routes.draw do
 
-  resources :catagories do
-    get :catagory_with_subcatagory, on: :collection
+  namespace :admin do
+    get :index
+    resources :reports
+    resources :catagories do
+      get :catagory_with_subcatagory, on: :collection
+    end
   end
+  
   get 'admin' => 'admin#index'
   resources :users do
     get :orders, on: :collection
@@ -14,9 +19,7 @@ Rails.application.routes.draw do
     get 'logout' => :destroy
   end
 
-
   resources :support_requests, only: [ :index, :update ]
-
   resources :users
   resources :orders
   resources :line_items

@@ -39,9 +39,10 @@ db:structure:load
 db:version
 log:clear
 middleware
-port_legacy_products
 restart
 secret
+set_role_admin
+port_legacy_products
 stats
 test
 test:all

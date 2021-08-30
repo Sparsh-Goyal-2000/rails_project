@@ -1,4 +1,4 @@
-<%= form_with(model: catagory) do |form| %>
+<%= form_with(model: @catagory, url: admin_catagory_path) do |form| %>
   <% if catagory.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(catagory.errors.count, "error") %> prohibited this catagory from being saved:</h2>
