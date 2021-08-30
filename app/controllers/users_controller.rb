@@ -1,7 +1,6 @@
 class UsersController < ApplicationController
-  skip_before_action :authorize, :set_last_activity, :set_logged_in_user, :set_counter, only: [:new, :create]
+  skip_before_action :authorize, :set_last_activity, :set_counter, only: [:new, :create]
   before_action :set_user, only: %i[ show edit update destroy ]
-  before_action :ensure_user_is_admin, only: [:index, :destroy]
 
   # GET /users or /users.json
   def index
@@ -24,12 +23,12 @@ class UsersController < ApplicationController
 
   def line_items
     @items = @current_user.line_items.paginate(page: params[:page], per_page: ENTRY_PER_PAGE)
-    render layout: 'myorders'
+    # render layout: 'myorders'
   end
 
   def orders
     @orders = @current_user.orders.paginate(page: params[:page], per_page: ENTRY_PER_PAGE)
-    render layout: 'myorders'
+    # render layout: 'myorders'
   end
 
   # POST /users or /users.json
