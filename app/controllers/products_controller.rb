@@ -3,7 +3,13 @@ class ProductsController < ApplicationController
 
   # GET /products or /products.json
   def index
-    @products = Product.all
+    if params[:catagory_id].nil?
+      @products = Product.all
+    else
+      subcatagories_id = Catagory.where(parent_id: params[:catagory_id]).pluck(:id)
+      subcatagories_id << params[:catagory_id]
+      @products = Product.where(catagory_id: subcatagories_id)
+    end
   end
 
   # GET /products/1 or /products/1.json

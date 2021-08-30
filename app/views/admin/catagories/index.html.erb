@@ -8,7 +8,7 @@
     <th>No. Of Products</th>
   <tr>
   <% @catagories.each do |catagory| %>
-      <td><%= catagory.title %></td>
+      <td><%= link_to catagory.title, catagory_products_path(catagory) %></td>
       <td><%= catagory.products_count %></td>
       <td><%= link_to 'Show', admin_catagory_path(catagory) %></td>
       <td><%= link_to 'Edit', edit_admin_catagory_path(catagory) %></td>
