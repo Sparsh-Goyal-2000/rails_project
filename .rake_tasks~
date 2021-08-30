@@ -42,6 +42,7 @@ middleware
 restart
 secret
 set_role_admin
+port_legacy_products
 stats
 test
 test:all

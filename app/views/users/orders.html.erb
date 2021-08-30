@@ -1,10 +1,11 @@
 <% if @orders.present? %>
-  <table>
+  <h1>Your Orders</h1>
+  <table border = 1>
     <tr>
       <th> Items</th>
       <th> Total Price</th>
     </tr>
-    <% @orders.each do |order| %>
+    <% @orders.includes(line_items: :product).each do |order| %>
       <tr>
         <td>
           <% total = 0 %>
